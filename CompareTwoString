@@ -1,0 +1,20 @@
+def compare(string1,string2):
+  l1=len(string1)
+  l2=len(string2)
+  if l1>l2:
+    maximum=l1
+    mininum=l2
+  else:
+    maximum=l2
+    mininum=l1
+  j=0
+  diff=0
+  for i in range(mininum):
+    if string1[i]==string2[i]:
+      continue
+    else:
+      diff+=1
+  d=maximum-mininum
+  diff+=d
+  #print(diff)
+  return diff
