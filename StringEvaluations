@@ -1,0 +1,124 @@
+import string
+import random
+import 
+import itertools
+
+def string_generator(size=5, chars=string.ascii_lowercase):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+from itertools import islice
+
+def take(n, iterable):
+    "Return first n items of the iterable as a list"
+    return list(islice(iterable, n))
+
+def CreatePopulations(InputString):
+    #Initialization
+    MutationRate=0.2
+    Recombinerate=0.4
+    ParentLength=5
+    PopulationArray=[]
+    EvaluationDict={}
+
+    Childrens=[]
+    mini=True
+    DictEvalChildrens={}
+    for i in range(1000):
+        PopulationArray.append(string_generator(5))
+    for i in range(1000):
+        dif=Compare_T1.compare(PopulationArray[i],InputString)
+        EvaluationDict[PopulationArray[i]]=dif
+
+
+    M=ParentLength*Recombinerate
+    M=int(M)
+    #print(M)
+    #start loop in semiCode
+    #for c in EvaluationDict.keys():
+    while mini:
+        for i in range(0,1000,2):
+            ch1=''
+            ch2=''
+            Parent1=PopulationArray[i]
+            Parent2=PopulationArray[i+1]
+
+            part1=Parent1[:M]
+            part2=Parent1[M:]
+
+            part3=Parent2[:M]
+            part4=Parent2[M:]
+
+            ch1=part1+part4
+            ch2=part3+part2
+            #print('part1=> ',part1 ,'part2=> ',part2 ,'part3=>',part3,'part4=>',part4)
+            #print('ch1: ',ch1,' , ' , 'ch2 :' , ch2)
+            #print('chi1 before changed: ',ch1,"  chil2 before mutation",ch2)
+            place=random.randint(0,4)
+            randStr=string_generator(1)
+
+
+
+            #print("randstr",randStr)
+            #print("exchanges chaacters: ",ch1[place])
+
+            newch1=''
+            newch2=''
+
+            newch1=ch1[:place]+randStr+ch1[place+1:]
+            place=random.randint(0,4)
+            randStr=string_generator(1)
+
+            newch2=ch2[:place]+randStr+ch2[place+1:]
+            #place-=1
+            #print("palce",place)
+            #print('children1 after changes: ',newch1)
+
+            Childrens.append(newch1)
+            Childrens.append(newch2)
+            newch1=''
+            newch2=''
+
+        DictEvalChild={}
+            #print(type(Childrens))
+        for k in range(1000):
+            #print('childrens k is: ',Childrens[k])
+            dd= Compare_T1.compare(Childrens[k],InputString)
+            DictEvalChild[Childrens[k]]=dd
+
+        EvaluationDict={}
+        for i in range(1000):
+            dif=Compare_T1.compare(PopulationArray[i],InputString)
+            EvaluationDict[PopulationArray[i]]=dif
+
+        #print('Childrens is:',Childrens)
+        print('Dict children is:: ', DictEvalChild)
+
+        AllItemsDict=EvaluationDict.copy()
+        AllItemsDict.update(DictEvalChild)
+
+        AllItemsDict={k: v for k, v in sorted(AllItemsDict.items(), key=lambda item: item[1])}
+        PopulationArray=[]
+
+
+        AllItemsDict = dict(itertools.islice(AllItemsDict.items(), 1000))
+        pastFinalDIct=AllItemsDict
+        #print("all items now is: ",AllItemsDict)
+        PopulationArray.clear()
+
+        for i in AllItemsDict:
+            PopulationArray.append(i)
+        #print('pop array now is: ',PopulationArray)
+        Childrens=[]
+
+        for k , v in AllItemsDict.items():
+            if v==0:
+                mini=False
+
+    print('pop array: ',PopulationArray)
+    print('evaluation dict is:',len(EvaluationDict),' , ',EvaluationDict)
+    #print(ESorted)
+    print('all items is: ',len(AllItemsDict),' , ',AllItemsDict)
+
+
+InpuStr='mobin'
+CreatePopulations(InpuStr)
