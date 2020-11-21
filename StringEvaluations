@@ -1,6 +1,6 @@
 import string
 import random
-import 
+import CompareTwoString
 import itertools
 
 def string_generator(size=5, chars=string.ascii_lowercase):
@@ -18,23 +18,21 @@ def CreatePopulations(InputString):
     Recombinerate=0.4
     ParentLength=5
     PopulationArray=[]
-    EvaluationDict={}
-
     Childrens=[]
+    ParentEvaluationDict={}
+    ChildrensEvalDict={}
     mini=True
-    DictEvalChildrens={}
+    
     for i in range(1000):
         PopulationArray.append(string_generator(5))
     for i in range(1000):
-        dif=Compare_T1.compare(PopulationArray[i],InputString)
-        EvaluationDict[PopulationArray[i]]=dif
+        dif=CompareTwoString.compare(PopulationArray[i],InputString)
+        ParentEvaluationDict[PopulationArray[i]]=dif
 
 
     M=ParentLength*Recombinerate
     M=int(M)
-    #print(M)
-    #start loop in semiCode
-    #for c in EvaluationDict.keys():
+    
     while mini:
         for i in range(0,1000,2):
             ch1=''
@@ -78,31 +76,31 @@ def CreatePopulations(InputString):
             newch1=''
             newch2=''
 
-        DictEvalChild={}
+        ChildrensEvalDict={}
             #print(type(Childrens))
         for k in range(1000):
             #print('childrens k is: ',Childrens[k])
-            dd= Compare_T1.compare(Childrens[k],InputString)
-            DictEvalChild[Childrens[k]]=dd
+            dd= CompareTwoString.compare(Childrens[k],InputString)
+            ChildrensEvalDict[Childrens[k]]=dd
 
-        EvaluationDict={}
+        ParentEvaluationDict={}
         for i in range(1000):
-            dif=Compare_T1.compare(PopulationArray[i],InputString)
-            EvaluationDict[PopulationArray[i]]=dif
+            dif=CompareTwoString.compare(PopulationArray[i],InputString)
+            ParentEvaluationDict[PopulationArray[i]]=dif
 
         #print('Childrens is:',Childrens)
-        print('Dict children is:: ', DictEvalChild)
+        print('Dict children is:: ', ChildrensEvalDict)
 
-        AllItemsDict=EvaluationDict.copy()
-        AllItemsDict.update(DictEvalChild)
+        AllItemsDict=ParentEvaluationDict.copy()
+        AllItemsDict.update(ChildrensEvalDict)
 
         AllItemsDict={k: v for k, v in sorted(AllItemsDict.items(), key=lambda item: item[1])}
         PopulationArray=[]
 
 
         AllItemsDict = dict(itertools.islice(AllItemsDict.items(), 1000))
-        pastFinalDIct=AllItemsDict
         #print("all items now is: ",AllItemsDict)
+        
         PopulationArray.clear()
 
         for i in AllItemsDict:
@@ -115,7 +113,7 @@ def CreatePopulations(InputString):
                 mini=False
 
     print('pop array: ',PopulationArray)
-    print('evaluation dict is:',len(EvaluationDict),' , ',EvaluationDict)
+    print('evaluation dict is:',len(ParentEvaluationDict),' , ',ParentEvaluationDict)
     #print(ESorted)
     print('all items is: ',len(AllItemsDict),' , ',AllItemsDict)
 
